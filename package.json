@@ -1,0 +1,26 @@
+{
+  "name": "db-commit",
+  "version": "1.0.0",
+  "description": "Database tables in nodejs project",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EnzoDeg40/db-commit.git"
+  },
+  "author": "Enzo Degraeve",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EnzoDeg40/db-commit/issues"
+  },
+  "homepage": "https://github.com/EnzoDeg40/db-commit#readme",
+  "bin": {
+    "db-commit": "./cli.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "mysql": "^2.18.1"
+  }
+}
