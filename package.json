@@ -1,10 +1,10 @@
 {
   "name": "db-commit",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Database tables in nodejs project",
-  "main": "index.js",
+  "main": "cli.js",
   "scripts": {
-    "test": "node index.js"
+    "test": "node cli.js"
   },
   "repository": {
     "type": "git",

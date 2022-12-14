@@ -1,15 +1,24 @@
 #!/usr/bin/env node
 const mysql = require('mysql');
+const fs = require('fs');
 require('dotenv').config();
 
 // Grab provided arguments
 const [,, ...args] = process.argv;
 
+// If first argument is remove, remove all files in the database folder
+if(args[0] == 'remove') {
+    const a = require('./remove');
+    a();
+    process.exit(1);
+}
+
 // Print hello world provided arguments
 console.log(`Hello world ${args}`);
 
 // Print current working directory
-console.log(process.cwd());
+let currentDir = process.cwd();
+console.log(currentDir);
 
 // Get the database credentials from the .env file
 let dbhost = process.env.DB_HOST;
@@ -40,5 +49,29 @@ sql.connect(function(err) {
         process.exit(1);
     }
     console.log('Connected to the database');
-    process.exit(1);
+    //process.exit(1);
+});
+
+// Create folder if it does not exist
+const dir = currentDir + '/database';
+if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+}
+
+sql.query('SHOW TABLES', function (error, results, fields) {
+    if (error) throw error;
+    //console.log('The solution is: ', results);
+    results.forEach(function(result) {
+        let table = result["Tables_in_" + dbname];
+
+        // Create file for each table
+        let file = dir + '/' + table + '.sql';
+        if (!fs.existsSync(file)){
+            // Create file
+            fs.appendFile(file, '', function (err) {
+                if (err) throw err;
+                console.log('Saved!');
+            });
+        }
+    });
 });

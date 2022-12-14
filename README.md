@@ -10,6 +10,9 @@ This package is still in development, it is not yet ready to be used.
 npm install db-commit
 ```
 
+// .env
+If you
+
 ## Usage
 
 Generate SQL files in `database` folder
@@ -22,3 +25,7 @@ Apply SQL files in `database` folder
 db-commit push
 ```
 
+Remove SQL files in `database` folder
+```bash
+db-commit remove
+```
