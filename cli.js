@@ -6,6 +6,14 @@ require('dotenv').config();
 // Grab provided arguments
 const [,, ...args] = process.argv;
 
+// If no arguments are provided, print help
+if(args.length == 0) {
+    console.log('db-commit remove   Remove all files in the database folder');
+    console.log('db-commit push     Push all files in the database folder to the database');
+    console.log('db-commit pull     Pull all files from the database to the database folder');
+    process.exit(1);
+}
+
 // If first argument is remove, remove all files in the database folder
 if(args[0] == 'remove') {
     const a = require('./remove');
