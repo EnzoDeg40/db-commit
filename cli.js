@@ -21,9 +21,6 @@ if(args[0] == 'remove') {
     process.exit(0);
 }
 
-// Print hello world provided arguments
-console.log(`Hello world ${args}`);
-
 // Print current working directory
 let currentDir = process.cwd();
 console.log(currentDir);
@@ -37,7 +34,7 @@ let dbport = process.env.DB_PORT || 3306;
 
 // Check if the database credentials are provided or not
 if(dbhost == undefined || dbuser == undefined || dbpass == undefined || dbname == undefined) {
-    console.log('Please provide a .env file with the following variables: DB_HOST, DB_USER, DB_PASSWORD, DB_NAME');
+    console.log('Please provide a .env file with the following variables: DB_HOST, DB_USER, DB_PASSWORD, DB_NAME. DB_PORT is optional.');
     process.exit(1);
 }
 
@@ -66,22 +63,30 @@ if (!fs.existsSync(dir)){
     fs.mkdirSync(dir);
 }
 
+// Get all tables from the database
 sql.query('SHOW TABLES', function (error, results, fields) {
     if (error) throw error;
-    //console.log('The solution is: ', results);
-    results.forEach(function(result) {
-        let table = result["Tables_in_" + dbname];
 
-        // Create file for each table
+    // Loop through all tables
+    results.forEach(function(result) {
+
+        // Set table name and file name
+        let table = result["Tables_in_" + dbname];
         let file = dir + '/' + table + '.sql';
-        if (!fs.existsSync(file)){
-            // Create file
-            fs.appendFile(file, '', function (err) {
+
+        // Get the create table query
+        sql.query('SHOW CREATE TABLE ' + table, function (error, results, fields) {
+            if (error) throw error;
+            
+            // Write the create table query to the file
+            fs.writeFile(file, results[0]['Create Table'] + ";\n\n", function (err) {
                 if (err) throw err;
-                console.log('Saved!');
             });
-        }
+        });
     });
 });
 
-process.exit(0);
+
+    
+
+//process.exit(0);
