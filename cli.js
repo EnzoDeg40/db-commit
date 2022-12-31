@@ -6,24 +6,25 @@ require('dotenv').config();
 // Grab provided arguments
 const [,, ...args] = process.argv;
 
-// If no arguments are provided, print help
-if(args.length == 0) {
+function printHelp(){
     console.log('db-commit remove   Remove all files in the database folder');
     console.log('db-commit push     Push all files in the database folder to the database');
     console.log('db-commit pull     Pull all files from the database to the database folder');
+    console.log('db-commit help     Print this help message');
+}
+
+// If no arguments are provided, print help
+if(args.length == 0 || args[0] == 'help') {
+    printHelp();
     process.exit(0);
 }
 
 // If first argument is remove, remove all files in the database folder
 if(args[0] == 'remove') {
-    const a = require('./remove');
-    a();
+    const rm = require('./remove');
+    rm();
     process.exit(0);
 }
-
-// Print current working directory
-let currentDir = process.cwd();
-console.log(currentDir);
 
 // Get the database credentials from the .env file
 let dbhost = process.env.DB_HOST;
@@ -56,36 +57,39 @@ sql.connect(function(err) {
     console.log('Connected to the database');
 });
 
+
 // Create folder if it does not exist
+const currentDir = process.cwd();
 const dir = currentDir + '/database';
 if (!fs.existsSync(dir)){
     fs.mkdirSync(dir);
 }
 
-// Get all tables from the database
-sql.query('SHOW TABLES', function (error, results, fields) {
-    if (error) throw error;
+if(args[0] == 'pull') {
+    // Get all tables from the database
+    sql.query('SHOW TABLES', function (error, results, fields) {
+        if (error) throw error;
 
-    // Loop through all tables
-    results.forEach(function(result) {
+        console.log(results.length + ' tables found in database');
 
-        // Set table name and file name
-        let table = result["Tables_in_" + dbname];
-        let file = dir + '/' + table + '.sql';
+        // Loop through all tables
+        results.forEach(function(result) {
 
-        // Get the create table query
-        sql.query('SHOW CREATE TABLE ' + table, function (error, results, fields) {
-            if (error) throw error;
-            
-            // Write the create table query to the file
-            fs.writeFile(file, results[0]['Create Table'] + ";\n\n", function (err) {
-                if (err) throw err;
+            // Set table name and file name
+            let table = result["Tables_in_" + dbname];
+            let file = dir + '/' + table + '.sql';
+
+            // Get the create table query
+            sql.query('SHOW CREATE TABLE ' + table, function (error, results, fields) {
+                if (error) throw error;
+                
+                // Write the create table query to the file
+                fs.writeFile(file, results[0]['Create Table'] + ";\n\n", function (err) {
+                    if (err) throw err;
+                    console.log('Working on ' + table);
+                });
             });
         });
     });
-});
+}
 
-
-    
-
-//process.exit(0);

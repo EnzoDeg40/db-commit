@@ -5,7 +5,7 @@ This package allows you to manage database migrations in NodeJS projects using S
 ## Installation
 
 ```bash
-npm install db-commit
+npm install -g db-commit
 npm link db-commit
 ```
 

@@ -1,6 +1,6 @@
 {
   "name": "db-commit",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Database tables in nodejs project",
   "main": "cli.js",
   "scripts": {
