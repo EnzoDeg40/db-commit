@@ -54,7 +54,6 @@ sql.connect(function(err) {
         process.exit(1);
     }
     console.log('Connected to the database');
-    //process.exit(1);
 });
 
 // Create folder if it does not exist

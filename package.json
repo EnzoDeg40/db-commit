@@ -1,11 +1,10 @@
 {
   "name": "db-commit",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Database tables in nodejs project",
   "main": "cli.js",
   "scripts": {
-    "test": "node cli.js",
-    "install": "npm link db-commit"
+    "test": "node cli.js"
   },
   "repository": {
     "type": "git",
